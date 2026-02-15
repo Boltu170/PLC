@@ -1,0 +1,1517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Life Cycle & Portfolio Analysis</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #D2B48C;
+            color: #000;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .slide {
+            background: #E8D7C3;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            flex-grow: 1;
+            display: none;
+        }
+
+        .slide.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            color: #2C1810;
+            border-bottom: 4px solid #8B4513;
+            padding-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 2em;
+            margin-bottom: 15px;
+            color: #2C1810;
+        }
+
+        h3 {
+            font-size: 1.5em;
+            margin: 20px 0 10px 0;
+            color: #4A2511;
+        }
+
+        .content {
+            margin: 20px 0;
+        }
+
+        .bullet-points {
+            margin: 15px 0;
+            padding-left: 20px;
+        }
+
+        .bullet-points li {
+            margin: 10px 0;
+            font-size: 1.1em;
+            line-height: 1.8;
+        }
+
+        .example-box {
+            background: #F5E6D3;
+            border-left: 5px solid #D2691E;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+
+        .example-box h3 {
+            margin-top: 0;
+            color: #D2691E;
+        }
+
+        .definition-toggle {
+            background: #8B4513;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1em;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 15px 0;
+            transition: all 0.3s;
+        }
+
+        .definition-toggle:hover {
+            background: #A0522D;
+            transform: translateY(-2px);
+        }
+
+        .definition-content {
+            display: none;
+            background: #FFF8DC;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 8px;
+            border: 2px solid #8B4513;
+        }
+
+        .definition-content.show {
+            display: block;
+            animation: slideDown 0.3s;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; max-height: 0; }
+            to { opacity: 1; max-height: 500px; }
+        }
+
+        .mcq-section {
+            background: #FFE4B5;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+            border: 3px solid #CD853F;
+        }
+
+        .mcq-question {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #2C1810;
+        }
+
+        .mcq-options {
+            list-style: none;
+            padding: 0;
+        }
+
+        .mcq-option {
+            background: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .mcq-option:hover {
+            background: #FFF8DC;
+            border-color: #8B4513;
+            transform: translateX(5px);
+        }
+
+        .mcq-option.correct {
+            background: #90EE90;
+            border-color: #228B22;
+        }
+
+        .mcq-option.incorrect {
+            background: #FFB6C6;
+            border-color: #DC143C;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #8B4513;
+        }
+
+        .nav-btn {
+            background: #8B4513;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1em;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .nav-btn:hover:not(:disabled) {
+            background: #A0522D;
+            transform: scale(1.05);
+        }
+
+        .nav-btn:disabled {
+            background: #A9A9A9;
+            cursor: not-allowed;
+        }
+
+        .progress {
+            text-align: center;
+            font-size: 1.2em;
+            color: #2C1810;
+            font-weight: bold;
+        }
+
+        .visual-diagram {
+            text-align: center;
+            margin: 20px 0;
+            font-size: 3em;
+        }
+
+        .stage-box {
+            display: inline-block;
+            background: #FFF8DC;
+            padding: 15px 25px;
+            margin: 10px;
+            border-radius: 10px;
+            border: 3px solid #8B4513;
+            font-size: 0.9em;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        table th, table td {
+            border: 2px solid #8B4513;
+            padding: 12px;
+            text-align: left;
+        }
+
+        table th {
+            background: #CD853F;
+            color: white;
+            font-weight: bold;
+        }
+
+        table td {
+            background: #FFF8DC;
+        }
+
+        .highlight {
+            background: #FFD700;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        
+        <!-- Slide 1: Title -->
+        <div class="slide active">
+            <h1>📊 Product Decisions</h1>
+            <h2>Product Life Cycle & Portfolio Analysis</h2>
+            <div class="content">
+                <div class="visual-diagram">💡➡️📈➡️⚖️➡️📉</div>
+                <div class="bullet-points">
+                    <ul>
+                        <li>Understanding how products evolve over time</li>
+                        <li>Strategic decision-making for product portfolios</li>
+                        <li>Marketing mix adjustments across product stages</li>
+                        <li>Real-world applications from major brands</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 2: Product Life Cycle Definition -->
+        <div class="slide">
+            <h1>🔄 What is the Product Life Cycle?</h1>
+            <div class="content">
+                <div class="bullet-points">
+                    <ul>
+                        <li>Theory that all products follow a <span class="highlight">similar pattern over time</span></li>
+                        <li>Five key stages: Development → Introduction → Growth → Maturity → Decline</li>
+                        <li>Sales patterns change predictably at each stage</li>
+                        <li>Helps businesses plan marketing strategies effectively</li>
+                    </ul>
+                </div>
+
+                <button class="definition-toggle" onclick="toggleDefinition(this)">📖 Show Full Definition</button>
+                <div class="definition-content">
+                    <p><strong>Academic Definition:</strong> The product life cycle shows the sales of a product over time. It describes the stages a product goes through from when it was first thought of until it finally is removed from the market. Not all products reach this final stage - some continue to grow, and others rise and fall.</p>
+                    <p>The PLC is an important concept in marketing that enables businesses to understand market dynamics and adjust their strategies accordingly.</p>
+                </div>
+
+                <div class="example-box">
+                    <h3>📱 Real Example: iPhone Evolution</h3>
+                    <p><strong>Development (2005-2007):</strong> Apple secretly developed touchscreen technology</p>
+                    <p><strong>Introduction (2007):</strong> First iPhone launched with slow initial sales</p>
+                    <p><strong>Growth (2008-2012):</strong> App Store introduced, sales exploded globally</p>
+                    <p><strong>Maturity (2013-present):</strong> Market saturation, incremental updates</p>
+                    <p><strong>Each model enters decline</strong> when newer versions launch</p>
+                </div>
+
+                <div class="mcq-section">
+                    <div class="mcq-question">❓ Which stage of the PLC typically has the highest profit margins due to established market presence and economies of scale?</div>
+                    <ul class="mcq-options">
+                        <li class="mcq-option" onclick="checkAnswer(this, false)">A) Introduction stage with premium pricing strategies</li>
+                        <li class="mcq-option" onclick="checkAnswer(this, false)">B) Growth stage with rapidly expanding customer base</li>
+                        <li class="mcq-option" onclick="checkAnswer(this, false)">C) Decline stage with reduced marketing expenditure</li>
+                        <li class="mcq-option" onclick="checkAnswer(this, true)">D) Maturity stage with market dominance and efficiency</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: PLC Stages Overview -->
+        <div class="slide">
+            <h1>📊 The Five Stages of Product Life Cycle</h1>
+            <div class="content">
+                <div class="stage-box">1️⃣ DEVELOPMENT<br>Creating the product</div>
+                <div class="stage-box">2️⃣ INTRODUCTION<br>Launch & awareness</div>
+                <div class="stage-box">3️⃣ GROWTH<br>Rapid sales increase</div>
+                <div class="stage-box">4️⃣ MATURITY<br>Sales plateau</div>
+                <div class="stage-box">5️⃣ DECLINE<br>Sales decrease</div>
+
+                <div class="bullet-points">
+                    <ul>
+                        <li><strong>Development:</strong> Few users, early adopters, minimal competition</li>
+                        <li><strong>Introduction:</strong> Building customer base, establishing brand, pricing strategy</li>
+                        <li><strong>Growth:</strong> Growing adopters, competitor entry, fight for market share</li>
+                        <li><strong>Maturity:</strong> Market saturation, maintaining share, emphasis on efficiency</li>
+                        <li><strong>Decline:</strong> Sales drop-off, competitor exit, selective distribution</li>
+                    </ul>
+                </div>
+
+                <button class="definition-toggle" onclick="toggleDefinition(this)">📖 Show Detailed Characteristics</button>
+                <div class="definition-content">
+                    <p><strong>When new products launch, sales are usually slow.</strong> Customers are unaware, distribution is limited, and marketing costs are high relative to sales.</p>
+                    <p><strong>If successful, products enter growth phase.</strong> Sales accelerate as awareness builds, repeat purchases occur, and word-of-mouth spreads.</p>
+                    <p><strong>Eventually, sales stabilize at maturity.</strong> Most potential customers have been reached, competition intensifies, and market is saturated.</p>
+                    <p><strong>Finally, decline sets in.</strong> Newer alternatives emerge, customer preferences shift, or technology becomes obsolete.</p>
+                </div>
+
+                <div class="example-box">
+                    <h3>🎮 Real Example: PlayStation Console Generations</h3>
+                    <p><strong>PS5 (Current):</strong> Introduction/Early Growth - high demand, supply constraints, building game library</p>
+                    <p><strong>PS4 (2013-2020):</strong> Maturity/Decline - massive installed base, price drops, focus shifted to PS5</p>
+                    <p><strong>PS3 (2006-2017):</strong> Complete lifecycle - struggled initially, grew mid-cycle, declined as PS4 launched</p>
+                    <p>Each generation demonstrates the classic PLC pattern clearly.</p>
+                </div>
+
+                <div class="mcq-section">
+                    <div class="mcq-question">❓ During which stage would a business most likely use penetration pricing to gain market share quickly?</div>
+                    <ul class="mcq-options">
+                        <li class="mcq-option" onclick="checkAnswer(this, false)">A) Maturity - to compete with established rivals</li>
+                        <li class="mcq-option" onclick="checkAnswer(this, true)">B) Introduction - to attract early adopters rapidly</li>
+                        <li class="mcq-option" onclick="checkAnswer(this, false)">C) Decline - to clear remaining inventory</li>
+                        <li class="mcq-option" onclick="checkAnswer(this, false)">D) Growth - to maximize profit from demand</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Introduction Stage Deep Dive -->
+        <div class="slide">
+            <h1>🚀 Introduction Stage</h1>
+            <div class="content">
+                <div class="visual-diagram">💡➡️📢</div>
+                <div class="bullet-points">
+                    <ul>
+                        <li><strong>Low sales volume</strong> - customers unaware of product</li>
+                        <li><strong>High costs per unit</strong> - low production volumes, high marketing spend</li>
+                        <li><strong>Basic product versions</strong> - likely to be simple, core features only</li>
+                        <li><strong>Limited distribution</strong> - testing customer reactions and retailer interest</li>
+                        <li><strong>Pricing strategy critical</strong> - skimming (high price) or penetration (low price)</li>
+                    </ul>
+                </div>
+
+                <button class="definition-toggle" onclick="toggleDefinition(this)">📖 Show Marketing Strategy Details</button>
+                <div class="definition-content">
+                    <p><strong>Promotion:</strong> Marketing aims to raise awareness and explain product benefits. Advertising is informative rather than persuasive. Early discussions with retailers help finalize product packaging and positioning.</p>
+                    <p><strong>Distribution:</strong> May be limited as distributors wait to see customers' reactions. Businesses use this stage to gather feedback before wider rollout.</p>
+                    <p><strong>Financial Reality:</strong> This stage rarely generates profit. High development costs and overheads are spread over relatively few units. Launch costs and promotional expenses are substantial.</p>
+                </div>
+
+                <div class="example-box">
+                    <h3>🥤 Real Example: Prime Hydration Drink Launch (2022)</h3>
+                    <p><strong>Limited Initial Release:</strong> Started in select US stores only, created scarcity</p>
+                    <p><strong>Influencer-Led Awareness:</strong> Logan Paul & KSI used massive social media following</p>
+                    <p><strong>Premium Pricing:</strong> £2-3 per bottle, positioned as exclusive sports drink</p>
+                    <p><strong>Viral Marketing:</strong> Shortages created hype, resale market emerged</p>
+                    <p>Classic introduction strategy: build buzz before mass availability</p>
+                </div>
+
+                <div class="mcq-section">
+                    <div class="mcq-question">❓ What is the primary marketing objective during the introduction stage of the product life cycle?</div>
+                    <ul class="mcq-options">
+                        <li class="mcq-option" onclick="checkAnswer(this, false)">A) Maximize profit margins through premium pricing</li>
+                        <li class="mcq-option" onclick="checkAnswer(this, false)">B) Defend market share against competitor attacks</li>
+                        <li class="mcq-option" onclick="checkAnswer(this, true)">C) Build awareness and educate potential customers</li>
+                        <li class="mcq-option" onclick="checkAnswer(this, false)">D) Reduce costs through operational efficiency gains</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Growth Stage Deep Dive -->
+        <div class="slide">
+            <h1>📈 Growth Stage</h1>
+            <div class="content">
+                <div class="visual-diagram">📊🚀💰</div>
+                <div class="bullet-points">
+                    <ul>
+                        <li><strong>Rapidly increasing sales</strong> - product gaining market acceptance</li>
+                        <li><strong>Competitors enter market</strong> - attracted by visible success</li>
+                        <li><strong>Falling costs per unit</strong> - economies of scale achieved</li>
+                        <li><strong>Product modifications</strong> - adding features based on customer feedback</li>
+                        <li><strong>Wider distribution</strong> - expanding to more retailers and channels</li>
+                    </ul>
+                </div>
+
+                <button class="definition-toggle" onclick="toggleDefinition(this)">📖 Show Strategic Considerations</button>
+                <div class="definition-content">
+                    <p><strong>Building Loyalty:</strong> Marketing shifts from awareness to building customer loyalty. Brand differentiation becomes crucial as competitors appear.</p>
+                    <p><strong>Distribution Expansion:</strong> More distributors willing to stock the product. Businesses increase presence across multiple retail channels.</p>
+                    <p><strong>Profitability:</strong> This is when businesses start gaining profit. Initial investments are recovered, and economies of scale reduce unit costs while sales volume increases substantially.</p>
+                    <p><strong>Range Extension:</strong> May be modified based on initial customer feedback. Range may be increased to appeal to different market segments.</p>
+                </div>
+
+                <div class="example-box">
+                    <h3>🚗 Real Example: Tesla Model 3 (2017-2020)</h3>
+                    <p><strong>2017-2018:</strong> Production ramped from hundreds to thousands per week</p>
+                    <p><strong>2019:</strong> Became world's best-selling electric car, competitors scrambled</p>
+                    <p><strong>Price Adjustments:</strong> Started $35k promise, offered premium versions first</p>
+                    <p><strong>Global Expansion:</strong> US → Europe → China → Rest of World rollout</p>
+                    <p><strong>Variants Added:</strong> Standard Range, Long Range, Performance models</p>
+                    <p>Classic growth stage: rapid scaling, competition response, product diversification</p>
+                </div>
+
+                <div class="mcq-section">
+                    <div class="mcq-question">❓ Why do competitors typically enter the market during the growth stage rather than introduction?</div>
+                    <ul class="mcq-options">
+                        <li class="mcq-option" onclick="checkAnswer(this, false)">A) Legal barriers prevent earlier entry</li>
+                        <li class="mcq-option" onclick="checkAnswer(this, true)">B) Proven demand reduces their risk</li>
+                        <li class="mcq-option" onclick="checkAnswer(this, false)">C) Technology becomes cheaper to copy</li>
+                        <li class="mcq-option" onclick="checkAnswer(this, false)">D) Original firm invites competitors in</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: Maturity Stage Deep Dive -->
+        <div class="slide">
+            <h1>⚖️ Maturity Stage</h1>
+            <div class="content">
+                <div class="visual-diagram">📊➡️💰</div>
+                <div class="bullet-points">
+                    <ul>
+                        <li><strong>Sales growth slows</strong> - market becomes saturated</li>
+                        <li><strong>Peak profit generation</strong> - high sales with optimized costs</li>
+                        <li><strong>Intense competition</strong> - fighting to maintain market share</li>
+                        <li><strong>Product differentiation critical</strong> - core products refined, variants removed</li>
+                        <li><strong>Marketing focuses on loyalty</strong> - highlighting differences from competitors</li>
+                    </ul>
+                </div>
+
+                <button class="definition-toggle" onclick="toggleDefinition(this)">📖 Show Maturity Challenges</button>
+                <div class="definition-content">
+                    <p><strong>Market Saturation:</strong> Most potential customers have been reached. Growth only comes from population increase or stealing competitors' customers.</p>
+                    <p><strong>Price Competition:</strong> May have to drop prices to maintain competitiveness. This can erode profit margins despite high sales volumes.</p>
+                    <p><strong>Innovation Pressure:</strong> Need to innovate to extend the maturity phase. This is where extension strategies become crucial.</p>
+                    <p><strong>Portfolio Management:</strong> Businesses may diversify their range, focusing on most profitable items and removing poorly-performing variants that don't sell well.</p>
+                </div>
+
+                <div class="example-box">
+                    <h3>☕ Real Example: Starbucks Coffee</h3>
+                    <p><strong>Market Position:</strong> Dominant player in UK coffee shop market since early 2000s</p>
+                    <p><strong>Extension Strategies:</strong></p>
+                    <p>• Seasonal drinks (Pumpkin Spice Latte, Christmas specials)</p>
+                    <p>• Food range expansion (breakfast, lunch items)</p>
+                    <p>• Mobile app & rewards program for loyalty</p>
+                    <p>• Plant-based milk options for changing preferences</p>
+                    <p>• Delivery partnerships (Uber Eats, Deliveroo)</p>
+                    <p><strong>Competition:</strong> Costa, Caffè Nero, Pret, independent cafes</p>
+                    <p>Classic maturity: constantly innovating to maintain position in saturated market</p>
+                </div>
+
+                <div class="mcq-section">
+                    <div class="mcq-question">❓ Which action is most characteristic of a company managing a product in the maturity stage?</div>
+                    <ul class="mcq-options">
+                        <li class="mcq-option" onclick="checkAnswer(this, false)">A) Investing heavily in capacity expansion</li>
+                        <li class="mcq-option" onclick="checkAnswer(this, false)">B) Spending primarily on informative advertising</li>
+                        <li class="mcq-option" onclick="checkAnswer(this, true)">C) Emphasizing differentiation from competitors' offerings</li>
+                        <li class="mcq-option" onclick="checkAnswer(this, false)">D) Limiting distribution to premium outlets</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: Decline Stage Deep Dive -->
+        <div class="slide">
+            <h1>📉 Decline Stage</h1>
+            <div class="content">
+                <div class="visual-diagram">📊⬇️</div>
+                <div class="bullet-points">
+                    <ul>
+                        <li><strong>Sales falling</strong> - customer interest decreasing</li>
+                        <li><strong>Reduced competition</strong> - some competitors exit the market</li>
+                        <li><strong>Lower marketing spend</strong> - costs reduced as product phased out</li>
+                        <li><strong>Selective distribution</strong> - focus on key profitable channels</li>
+                        <li><strong>Discount pricing</strong> - clearing inventory, maintaining some sales</li>
+                    </ul>
+                </div>
+
+                <button class="definition-toggle" onclick="toggleDefinition(this)">📖 Show Decline Management Options</button>
+                <div class="definition-content">
+                    <p><strong>Why Decline Happens:</strong> Technology advances, customer preferences change, better alternatives emerge, or fashion/trends move on.</p>
+                    <p><strong>Harvesting Strategy:</strong> Probably no spending at all on promotion. Marketing budgets allocated to newer products. Reduces costs while extracting remaining value.</p>
+                    <p><strong>Divestment Decision:</strong> Lower budgets to keep costs down. Eventually, decision must be made whether to discontinue entirely or reinvent/reposition the product.</p>
+                    <p><strong>Focused Distribution:</strong> May focus on key outlets and more profitable channels only, abandoning less profitable retail relationships.</p>
+                </div>
+
+                <div class="example-box">
+                    <h3>📀 Real Example: Physical Media (DVDs, Blu-rays)</h3>
+                    <p><strong>Peak:</strong> Mid-2000s - DVDs everywhere, huge sales</p>
+                    <p><strong>Decline Started:</strong> ~2010 with Netflix streaming, now accelerating</p>
+                    <p><strong>Current State:</strong></p>
+                    <p>• HMV closed most stores, focused on vinyl/merchandise</p>
+                    <p>• Supermarkets reduced shelf space dramatically</p>
+                    <p>• Prices heavily discounted (£3-5 for new releases)</p>
+                    <p>• Collectors only - niche market remains</p>
+                    <p><strong>Replacement:</strong> Netflix, Disney+, Amazon Prime, Apple TV+</p>
+                    <p>Classic decline: better technology (streaming) replaced physical format entirely</p>
+                </div>
+
+                <div class="mcq-section">
+                    <div class="mcq-question">❓ What typically causes products to enter the decline stage of the life cycle?</div>
+                    <ul class="mcq-options">
+                        <li class="mcq-option" onclick="checkAnswer(this, true)">A) Technological advances or changing consumer preferences</li>
+                        <li class="mcq-option" onclick="checkAnswer(this, false)">B) Excessive marketing expenditure reducing profitability</li>
+                        <li class="mcq-option" onclick="checkAnswer(this, false)">C) Government regulations restricting product availability</li>
+                        <li class="mcq-option" onclick="checkAnswer(this, false)">D) Deliberate company strategy to phase products</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: Marketing Mix Across PLC -->
+        <div class="slide">
+            <h1>🎯 Marketing Mix Changes Across PLC</h1>
+            <div class="content">
+                <table>
+                    <tr>
+                        <th>Element</th>
+                        <th>Introduction</th>
+                        <th>Growth</th>
+                        <th>Maturity</th>
+                        <th>Decline</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Product</strong></td>
+                        <td>Basic version</td>
+                        <td>Modifications, range extension</td>
+                        <td>Focus on bestsellers</td>
+                        <td>Minimal changes</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Price</strong></td>
+                        <td>Skimming or penetration</td>
+                        <td>Competitive pricing</td>
+                        <td>Price to maintain share</td>
+                        <td>Discounting</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Promotion</strong></td>
+                        <td>Build awareness</td>
+                        <td>Build loyalty</td>
+                        <td>Emphasize differentiation</td>
+                        <td>Minimal spend</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Place</strong></td>
+                        <td>Selective channels</td>
+                        <td>Expanding distribution</td>
+                        <td>Intensive distribution</td>
+                        <td>Selective channels</td>
+                    </tr>
+                </table>
+
+                <button class="definition-toggle" onclick="toggleDefinition(this)">📖 Show Strategic Reasoning</button>
+                <div class="definition-content">
+                    <p><strong>The Four Ps Must Adapt:</strong> Marketing managers need to adjust their marketing mix at different stages of the product life cycle to optimize performance and profitability.</p>
+                    <p><strong>Introduction Focus:</strong> High investment in product development but only prototypes produced. Sales are zero, costs per unit high. Not needed to set price yet. Promotion may begin to start raising customer awareness before launch.</p>
+                    <p><strong>Growth Optimization:</strong> Falling overheads spread over more units. Increasing sales allow economies of scale. Building loyalty becomes key as competitors enter. Range may be increased based on feedback.</p>
+                    <p><strong>Maturity Efficiency:</strong> Growth is slowing, falling as sales are still growing. Focus shifts to maintaining share and profitability. Marketing highlights differences with competitors' products.</p>
+                    <p><strong>Decline Management:</strong> Still likely to be low as development costs have been covered and reduced promotional costs are needed to raise awareness. Focus on most profitable items and channels.</p>
+                </div>
+
+                <div class="example-box">
+                    <h3>👟 Real Example: Nike Air Max Evolution</h3>
+                    <p><strong>Introduction (New Model):</strong> Premium price £150+, limited stores, influencer marketing</p>
+                    <p><strong>Growth:</strong> More colorways, expand to all Nike stores, athlete endorsements</p>
+                    <p><strong>Maturity:</strong> Price drops to £100, available in JD Sports/Foot Locker, loyalty rewards</p>
+                    <p><strong>Decline (Old Model):</strong> Discount to £60-70, outlet stores only, no advertising</p>
+                    <p>Each new Air Max follows this pattern while brand stays strong</p>
+                </div>
+
+                <div class="mcq-section">
+                    <div class="mcq-question">❓ Why would a business reduce promotional spending during the decline stage rather than increase it to boost sales?</div>
+                    <ul class="mcq-options">
+                        <li class="mcq-option" onclick="checkAnswer(this, false)">A) Legal restrictions prevent advertising declining products</li>
+                        <li class="mcq-option" onclick="checkAnswer(this, false)">B) Customers already have maximum awareness</li>
+                        <li class="mcq-option" onclick="checkAnswer(this, true)">C) Returns unlikely to justify investment costs</li>
+                        <li class="mcq-option" onclick="checkAnswer(this, false)">D) Competitors have already exited market</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 9: Extension Strategies Introduction -->
+        <div class="slide">
+            <h1>🔄 Extension Strategies</h1>
+            <div class="content">
+                <div class="visual-diagram">📈⏸️🔄📈</div>
+                <div class="bullet-points">
+                    <ul>
+                        <li><strong>Definition:</strong> Marketing plans to extend the <span class="highlight">maturity stage</span> before decline</li>
+                        <li><strong>Purpose:</strong> Delay decline and extend profitable period</li>
+                        <li><strong>Timing:</strong> Implemented during late maturity, before sales drop</li>
+                        <li><strong>Goal:</strong> Cheaper than developing entirely new products</li>
+                        <li><strong>Success varies:</strong> Some strategies work brilliantly, others fail</li>
+                    </ul>
+                </div>
+
+                <button class="definition-toggle" onclick="toggleDefinition(this)">📖 Show Extension Strategy Theory</button>
+                <div class="definition-content">
+                    <p><strong>Strategic Importance:</strong> Extension strategies are marketing plans to extend the maturity stage of the product before a brand new one is needed. They aim to give existing products a new lease of life.</p>
+                    <p><strong>Cost Effectiveness:</strong> Extending an existing product is usually cheaper and less risky than developing a completely new product from scratch. Development costs have already been recovered.</p>
+                    <p><strong>Market Reality:</strong> However, many extension strategies fail. Consumer preferences may have fundamentally shifted, or competitors may have superior alternatives that extension strategies cannot overcome.</p>
+                    <p><strong>Without Extension:</strong> Sales would naturally decline (shown as dotted line). With successful extension strategies, sales can be maintained or even increased temporarily.</p>
+                </div>
+
+                <div class="example-box">
+                    <h3>🍫 Real Example: Cadbury Dairy Milk Extensions</h3>
+                    <p><strong>Original:</strong> Plain Dairy Milk bar (1905) - would have declined long ago</p>
+                    <p><strong>Extension Strategies Used:</strong></p>
+                    <p>• New flavors: Fruit & Nut, Caramel, Oreo, Daim</p>
+                    <p>• Size variations: Buttons, Giant Bars, Miniatures</p>
+                    <p>• Seasonal products: Creme Eggs, Selection Boxes</p>
+                    <p>• Product forms: Drinking chocolate, cake bars, ice cream</p>
+                    <p>• Special editions: Limited flavors create buzz</p>
+                    <p><strong>Result:</strong> Brand remains UK's favorite chocolate after 100+ years</p>
+                </div>
+
+                <div class="mcq-section">
+                    <div class="mcq-question">❓ At which stage should extension strategies ideally be implemented for maximum effectiveness?</div>
+                    <ul class="mcq-options">
+                        <li class="mcq-option" onclick="checkAnswer(this, false)">A) During introduction to accelerate growth</li>
+                        <li class="mcq-option" onclick="checkAnswer(this, false)">B) During growth to maintain momentum</li>
+                        <li class="mcq-option" onclick="checkAnswer(this, false)">C) During decline to reverse falling sales</li>
+                        <li class="mcq-option" onclick="checkAnswer(this, true)">D) During late maturity before decline begins</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 10: Types of Extension Strategies -->
+        <div class="slide">
+            <h1>🛠️ Common Extension Strategies</h1>
+            <div class="content">
+                <div class="bullet-points">
+                    <ul>
+                        <li><strong>New Markets:</strong> Selling to different customer segments or geographical areas</li>
+                        <li><strong>Product Modification:</strong> Improving features, quality, or performance</li>
+                        <li><strong>New Uses:</strong> Promoting alternative ways to use the product</li>
+                        <li><strong>Repositioning:</strong> Changing target market or brand image</li>
+                        <li><strong>Pricing Changes:</strong> Special offers, bundles, or value packs</li>
+                        <li><strong>Promotional Campaigns:</strong> Renewed advertising to boost awareness</li>
+                        <li><strong>Packaging Changes:</strong> New look to attract attention</li>
+                    </ul>
+                </div>
+
+                <button class="definition-toggle" onclick="toggleDefinition(this)">📖 Show Strategy Details</button>
+                <div class="definition-content">
+                    <p><strong>Finding New Markets:</strong> Exporting to new countries or targeting different demographic groups who haven't yet adopted the product. This expands the customer base without changing the product.</p>
+                    <p><strong>Product Development:</strong> Adding new features or improving existing ones based on customer feedback. This can reignite interest from existing customers and attract new ones.</p>
+                    <p><strong>New Applications:</strong> Demonstrating alternative uses the product was not originally marketed for. This effectively creates a new market for the same product.</p>
+                    <p><strong>Rebranding:</strong> Changing packaging, logos, or marketing messages to appeal to different customers or refresh tired brand image. This can make old products feel new again.</p>
+                </div>
+
+                <div class="example-box">
+                    <h3>💪 Real Example: Lucozade Repositioning</h3>
+                    <p><strong>Original (1927-1980s):</strong> Marketed as energy drink for sick people recovering in hospital</p>
+                    <p><strong>Problem:</strong> Limited market, declining sales, outdated image</p>
+                    <p><strong>Extension Strategy (1983):</strong> Complete repositioning</p>
+                    <p>• NEW TARGET: Athletes and active people, not sick people</p>
+                    <p>• NEW MESSAGE: "Lucozade aids recovery" → "Lucozade replaces lost energy"</p>
+                    <p>• NEW ENDORSERS: Daley Thompson (Olympic athlete)</p>
+                    <p>• NEW VARIANTS: Sport, Energy, different flavors</p>
+                    <p><strong>Result:</strong> Sales multiplied, brand thrived for 40+ more years</p>
+                </div>
+
+                <div class="mcq-section">
+                    <div class="mcq-question">❓ Which extension strategy involves fundamentally changing the target customer segment for an existing product?</div>
+                    <ul class="mcq-options">
+                        <li class="mcq-option" onclick="checkAnswer(this, false)">A) Product modification through feature enhancement</li>
+                        <li class="mcq-option" onclick="checkAnswer(this, true)">B) Repositioning to appeal to different markets</li>
+                        <li class="mcq-option" onclick="checkAnswer(this, false)">C) Promotional campaigns increasing brand awareness</li>
+                        <li class="mcq-option" onclick="checkAnswer(this, false)">D) Pricing adjustments to improve competitiveness</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 11: Product Portfolio Analysis Introduction -->
+        <div class="slide">
+            <h1>📊 Product Portfolio Analysis</h1>
+            <div class="content">
+                <div class="visual-diagram">📦📦📦📦</div>
+                <div class="bullet-points">
+                    <ul>
+                        <li><strong>Definition:</strong> Analyzing the range of existing products to allocate resources effectively</li>
+                        <li><strong>Purpose:</strong> Examine existing position and plan what to do next</li>
+                        <li><strong>Key Question:</strong> Which products deserve investment? Which should be discontinued?</li>
+                        <li><strong>Balanced Portfolio:</strong> Mix of products at different life cycle stages</li>
+                        <li><strong>Cash Management:</strong> Profitable products fund development of new ones</li>
+                    </ul>
+                </div>
+
+                <button class="definition-toggle" onclick="toggleDefinition(this)">📖 Show Portfolio Theory</button>
+                <div class="definition-content">
+                    <p><strong>Strategic Purpose:</strong> Product portfolio analysis examines the existing position of a firm's products. This allows the firm to consider its existing position and plan what to do next.</p>
+                    <p><strong>Resource Allocation:</strong> Not all products deserve equal investment. Some generate cash that can fund development of others. Portfolio analysis helps make these decisions systematically.</p>
+                    <p><strong>Risk Management:</strong> Having products at different life cycle stages reduces risk. If one product fails or declines, others can sustain the business.</p>
+                    <p><strong>Strategic Planning:</strong> Analyzing the range of existing products of a business helps allocate resources effectively between them and guides decisions about new product development.</p>
+                </div>
+
+                <div class="example-box">
+                    <h3>🎮 Real Example: Nintendo's Product Portfolio (2024)</h3>
+                    <p><strong>Cash Generators:</strong> Nintendo Switch (maturity) - massive install base, steady sales, funding other projects</p>
+                    <p><strong>Growth Products:</strong> Switch games (Zelda, Mario releases) - ongoing revenue, high margins</p>
+                    <p><strong>Question Marks:</strong> Switch 2 development (rumored) - high investment, uncertain future</p>
+                    <p><strong>Legacy Products:</strong> 3DS (discontinued) - wound down, resources redirected</p>
+                    <p>Portfolio strategy: milk Switch profits, invest in next generation, maintain game pipeline</p>
+                </div>
+
+                <div class="mcq-section">
+                    <div class="mcq-question">❓ Why do businesses need a balanced product portfolio rather than focusing all resources on their most successful product?</div>
+                    <ul class="mcq-options">
+                        <li class="mcq-option" onclick="checkAnswer(this, false)">A) Legal requirements mandate product diversification</li>
+                        <li class="mcq-option" onclick="checkAnswer(this, true)">B) Products at different stages provide stability</li>
+                        <li class="mcq-option" onclick="checkAnswer(this, false)">C) Marketing departments need variety to justify budgets</li>
+                        <li class="mcq-option" onclick="checkAnswer(this, false)">D) Customers demand wider choice from brands</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 12: Boston Matrix Introduction -->
+        <div class="slide">
+            <h1>⭐ The Boston Matrix (BCG Matrix)</h1>
+            <div class="content">
+                <div class="visual-diagram">⭐🐄❓🐕</div>
+                <div class="bullet-points">
+                    <ul>
+                        <li><strong>Purpose:</strong> Framework for analyzing product portfolio systematically</li>
+                        <li><strong>Two Dimensions:</strong> Market growth rate (vertical) and market share (horizontal)</li>
+                        <li><strong>Four Categories:</strong> Stars, Cash Cows, Question Marks, Dogs</li>
+                        <li><strong>Strategic Tool:</strong> Guides investment and divestment decisions</li>
+                        <li><strong>Portfolio Balance:</strong> Ideally, business has products in multiple categories</li>
+                    </ul>
+                </div>
+
+                <button class="definition-toggle" onclick="toggleDefinition(this)">📖 Show Boston Matrix Theory</button>
+                <div class="definition-content">
+                    <p><strong>Developed by:</strong> Boston Consulting Group in the 1970s, hence "BCG Matrix" or "Boston Matrix"</p>
+                    <p><strong>Market Growth Rate (Vertical Axis):</strong> Indicates how fast the overall market is expanding. High growth markets offer opportunities; low growth markets are mature or declining.</p>
+                    <p><strong>Relative Market Share (Horizontal Axis):</strong> Measures the product's market share compared to competitors. High share indicates market leadership; low share suggests competitive disadvantage.</p>
+                    <p><strong>Strategic Quadrants:</strong> Each quadrant suggests different strategic actions - invest, maintain, develop, or divest. Products move between quadrants over time as markets and competitive positions evolve.</p>
+                </div>
+
+                <div class="example-box">
+                    <h3>🍎 Real Example: Apple's Portfolio (Simplified 2024)</h3>
+                    <p><strong>Rising Stars:</strong> Apple Watch - high growth wearables market, dominant position</p>
+                    <p><strong>Cash Cows:</strong> iPhone - mature market, but Apple has huge share generating massive profits</p>
+                    <p><strong>Question Marks:</strong> Vision Pro - new VR market with growth potential, uncertain share</p>
+                    <p><strong>Dogs:</strong> iPod (discontinued 2022) - dead market, no future</p>
+                    <p>Apple uses iPhone cash to fund Vision Pro development and Watch expansion</p>
+                </div>
+
+                <div class="mcq-section">
+                    <div class="mcq-question">❓ What do the two axes of the Boston Matrix measure to categorize products?</div>
+                    <ul class="mcq-options">
+                        <li class="mcq-option" onclick="checkAnswer(this, false)">A) Profitability and customer satisfaction levels</li>
+                        <li class="mcq-option" onclick="checkAnswer(this, true)">B) Market growth rate and relative market share</li>
+                        <li class="mcq-option" onclick="checkAnswer(this, false)">C) Product quality and brand reputation strength</li>
+                        <li class="mcq-option" onclick="checkAnswer(this, false)">D) Sales volume and production cost efficiency</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 13: Rising Stars -->
+        <div class="slide">
+            <h1>⭐ Rising Stars</h1>
+            <div class="content">
+                <div class="visual-diagram">⭐📈</div>
+                <div class="bullet-points">
+                    <ul>
+                        <li><strong>High market growth</strong> + <strong>High market share</strong></li>
+                        <li><strong>Market leaders</strong> in expanding industries</li>
+                        <li><strong>Require investment</strong> to maintain position against competitors</li>
+                        <li><strong>Generate revenue</strong> but need cash to fund growth</li>
+                        <li><strong>Future potential:</strong> Can become Cash Cows when market matures</li>
+                    </ul>
+                </div>
+
+                <button class="definition-toggle" onclick="toggleDefinition(this)">📖 Show Stars Strategy</button>
+                <div class="definition-content">
+                    <p><strong>Strategic Approach - HOLDING:</strong> This involves marketing spending to maintain sales and is used with rising star products. The goal is to protect market leadership as the market grows.</p>
+                    <p><strong>Investment Requirements:</strong> Stars require continued investment in marketing, production capacity, and product development to defend their position against competitors attracted by the growing market.</p>
+                    <p><strong>Cash Flow:</strong> Stars generate substantial revenue due to high market share, but this is often reinvested to maintain competitive position. They are typically cash-neutral.</p>
+                    <p><strong>Future Trajectory:</strong> As market growth slows, Stars should transition to Cash Cows, maintaining high share in a now-mature market with reduced investment needs.</p>
+                </div>
+
+                <div class="example-box">
+                    <h3>⚡ Real Example: Electric Vehicles Market</h3>
+                    <p><strong>Tesla Model Y (2020-present):</strong></p>
+                    <p>• World's best-selling EV globally</p>
+                    <p>• EV market growing 30-40% annually</p>
+                    <p>• Tesla leads with ~15-20% EV market share</p>
+                    <p>• Continuous investment: new factories, Gigapress technology, battery improvements</p>
+                    <p>• Competition from VW, BYD, Hyundai intensifying</p>
+                    <p><strong>Strategy:</strong> Hold position - constant price cuts, feature improvements, production scaling to maintain leadership as market explodes</p>
+                </div>
+
+                <div class="mcq-section">
+                    <div class="mcq-question">❓ Why do Rising Stars require substantial ongoing investment despite already having high market share?</div>
+                    <ul class="mcq-options">
+                        <li class="mcq-option" onclick="checkAnswer(this, false)">A) To prepare for inevitable market decline</li>
+                        <li class="mcq-option" onclick="checkAnswer(this, false)">B) Because high market share guarantees profitability</li>
+                        <li class="mcq-option" onclick="checkAnswer(this, false)">C) Legal requirements mandate reinvestment of profits</li>
+                        <li class="mcq-option" onclick="checkAnswer(this, true)">D) To defend position in rapidly growing market</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 14: Cash Cows -->
+        <div class="slide">
+            <h1>🐄 Cash Cows</h1>
+            <div class="content">
+                <div class="visual-diagram">🐄💰💰💰</div>
+                <div class="bullet-points">
+                    <ul>
+                        <li><strong>Low market growth</strong> + <strong>High market share</strong></li>
+                        <li><strong>Dominant position</strong> in mature, stable markets</li>
+                        <li><strong>Generate high profits</strong> with minimal investment needed</li>
+                        <li><strong>Fund other products</strong> - provide cash for Stars and Question Marks</li>
+                        <li><strong>Defend position</strong> but don't invest heavily in growth</li>
+                    </ul>
+                </div>
+
+                <button class="definition-toggle" onclick="toggleDefinition(this)">📖 Show Cash Cow Strategy</button>
+                <div class="definition-content">
+                    <p><strong>Strategic Approach - MILKING:</strong> This means taking whatever profits you can without much more new investment and is often used with cash cow products. Maximize cash extraction while maintaining market position.</p>
+                    <p><strong>Profit Characteristics:</strong> Cash Cows have achieved economies of scale, have established distribution networks, and require minimal marketing spend. Most revenue flows straight to profit.</p>
+                    <p><strong>Portfolio Role:</strong> The cash generated by Cash Cows funds development of Question Marks and supports Stars. Without Cash Cows, businesses struggle to invest in future growth.</p>
+                    <p><strong>Maintenance Strategy:</strong> Sufficient investment to maintain market share and defend against competitors, but avoid expensive growth initiatives. Focus on efficiency and cost management.</p>
+                </div>
+
+                <div class="example-box">
+                    <h3>🥤 Real Example: Coca-Cola Original</h3>
+                    <p><strong>Market Position:</strong></p>
+                    <p>• Dominant global cola brand for 100+ years</p>
+                    <p>• Soft drinks market mature (low/zero growth in West)</p>
+                    <p>• 45%+ share of global cola market</p>
+                    <p>• Massive profit margins on each bottle</p>
+                    <p><strong>Milking Strategy:</strong></p>
+                    <p>• Minimal product changes (same recipe)</p>
+                    <p>• Maintenance marketing (brand reminders, seasonal ads)</p>
+                    <p>• Efficient production and distribution</p>
+                    <p>• Profits fund Coke Zero, energy drinks, innovation</p>
+                    <p><strong>Result:</strong> Generates billions in cash annually with low investment</p>
+                </div>
+
+                <div class="mcq-section">
+                    <div class="mcq-question">❓ What is the primary strategic purpose of Cash Cow products in a business portfolio?</div>
+                    <ul class="mcq-options">
+                        <li class="mcq-option" onclick="checkAnswer(this, false)">A) Attract new customer segments through innovation</li>
+                        <li class="mcq-option" onclick="checkAnswer(this, false)">B) Defend against aggressive competitor market entry</li>
+                        <li class="mcq-option" onclick="checkAnswer(this, true)">C) Generate profits to fund other products</li>
+                        <li class="mcq-option" onclick="checkAnswer(this, false)">D) Build brand reputation across product ranges</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 15: Question Marks (Problem Children) -->
+        <div class="slide">
+            <h1>❓ Question Marks (Problem Children)</h1>
+            <div class="content">
+                <div class="visual-diagram">❓🤔</div>
+                <div class="bullet-points">
+                    <ul>
+                        <li><strong>High market growth</strong> + <strong>Low market share</strong></li>
+                        <li><strong>Uncertain future</strong> - could succeed or fail</li>
+                        <li><strong>Require significant investment</strong> to build market share</li>
+                        <li><strong>Consume cash</strong> without generating much revenue yet</li>
+                        <li><strong>Critical decision:</strong> Invest heavily or divest?</li>
+                    </ul>
+                </div>
+
+                <button class="definition-toggle" onclick="toggleDefinition(this)">📖 Show Question Mark Strategy</button>
+                <div class="definition-content">
+                    <p><strong>Strategic Approach - BUILDING:</strong> This involves investment in promotion and distribution to boost sales and is often used with problem children (question marks). The goal is to convert them into Stars.</p>
+                    <p><strong>The Dilemma:</strong> Question Marks are in attractive, high-growth markets but lack market share. Heavy investment might turn them into Stars, but failure means wasted resources.</p>
+                    <p><strong>Investment Requirements:</strong> Need substantial cash for marketing, R&D, production scaling, and distribution expansion. This cash usually comes from Cash Cows.</p>
+                    <p><strong>Decision Point:</strong> Management must decide: invest aggressively to gain share, or divest and redirect resources elsewhere. Maintaining low investment is usually worst option - neither succeeds nor exits.</p>
+                    <p><strong>Alternative Name:</strong> "Problem Children" reflects the challenge they present - demanding attention and resources with uncertain outcomes.</p>
+                </div>
+
+                <div class="example-box">
+                    <h3>🥗 Real Example: Plant-Based Meat (2020-2024)</h3>
+                    <p><strong>Companies:</strong> Beyond Meat, Impossible Foods, THIS, Moving Mountains</p>
+                    <p><strong>Market Context:</strong></p>
+                    <p>• Plant-based sector growing 20-30% annually</p>
+                    <p>• Multiple competitors, fragmented market</p>
+                    <p>• No dominant player (low market shares for all)</p>
+                    <p>• High investment needed: R&D, marketing, retail placement</p>
+                    <p><strong>The Question:</strong></p>
+                    <p>• Will they become mainstream (Stars)? Or remain niche?</p>
+                    <p>• Beyond Meat invested heavily but sales struggled</p>
+                    <p>• Some smaller players already exited market</p>
+                    <p><strong>Decision Time:</strong> Investors deciding whether to continue funding or cut losses</p>
+                </div>
+
+                <div class="mcq-section">
+                    <div class="mcq-question">❓ What makes Question Marks particularly challenging for business decision-making?</div>
+                    <ul class="mcq-options">
+                        <li class="mcq-option" onclick="checkAnswer(this, false)">A) They generate too much profit to discontinue</li>
+                        <li class="mcq-option" onclick="checkAnswer(this, false)">B) Legal obligations prevent divestment decisions</li>
+                        <li class="mcq-option" onclick="checkAnswer(this, true)">C) Require major investment with uncertain outcomes</li>
+                        <li class="mcq-option" onclick="checkAnswer(this, false)">D) Market growth guarantees eventual success</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 16: Dogs -->
+        <div class="slide">
+            <h1>🐕 Dogs</h1>
+            <div class="content">
+                <div class="visual-diagram">🐕📉</div>
+                <div class="bullet-points">
+                    <ul>
+                        <li><strong>Low market growth</strong> + <strong>Low market share</strong></li>
+                        <li><strong>Weak position</strong> in unattractive markets</li>
+                        <li><strong>Generate little profit</strong> or may lose money</li>
+                        <li><strong>Tie up resources</strong> that could be better used elsewhere</li>
+                        <li><strong>Typical action:</strong> Divest or discontinue</li>
+                    </ul>
+                </div>
+
+                <button class="definition-toggle" onclick="toggleDefinition(this)">📖 Show Dogs Strategy</button>
+                <div class="definition-content">
+                    <p><strong>Strategic Approach - DIVESTING:</strong> This involves selling off the product and is common with dogs or problem children. Cut losses and reallocate resources to more promising products.</p>
+                    <p><strong>Why They Exist:</strong> Former Stars or Cash Cows that declined, or Question Marks that failed to gain traction. Markets matured or shrank while competitive position weakened.</p>
+                    <p><strong>Resource Drain:</strong> Dogs consume management attention, occupy shelf space, use working capital, and tie up production capacity without generating adequate returns.</p>
+                    <p><strong>Exceptions:</strong> Some Dogs are kept for strategic reasons - completing a product line, serving loyal niche customers, or blocking competitors. But most should be eliminated.</p>
+                    <p><strong>Exit Challenges:</strong> Discontinuing products can damage customer relationships, leave employees jobless, or create negative publicity. Must be managed carefully.</p>
+                </div>
+
+                <div class="example-box">
+                    <h3>📱 Real Example: BlackBerry Phones (2016 onwards)</h3>
+                    <p><strong>Former Glory:</strong> Once dominated business phone market (2007-2010)</p>
+                    <p><strong>Dog Status (2016+):</strong></p>
+                    <p>• Smartphone market matured (low growth)</p>
+                    <p>• BlackBerry share dropped below 0.1%</p>
+                    <p>• Lost billions trying to compete</p>
+                    <p>• Physical keyboards no longer wanted</p>
+                    <p><strong>Decision - Divest:</strong></p>
+                    <p>• 2016: Stopped making own phones</p>
+                    <p>• Licensed brand to TCL, then OnwardMobility</p>
+                    <p>• 2022: Completely shut down phone services</p>
+                    <p>• Pivoted to software/security (better prospects)</p>
+                    <p><strong>Lesson:</strong> Eventually had to accept defeat and exit market entirely</p>
+                </div>
+
+                <div class="mcq-section">
+                    <div class="mcq-question">❓ Why do businesses often hesitate to divest Dog products despite poor performance?</div>
+                    <ul class="mcq-options">
+                        <li class="mcq-option" onclick="checkAnswer(this, true)">A) Emotional attachment and fear of negative publicity</li>
+                        <li class="mcq-option" onclick="checkAnswer(this, false)">B) Dogs typically generate highest profit margins</li>
+                        <li class="mcq-option" onclick="checkAnswer(this, false)">C) Legal requirements prevent product discontinuation</li>
+                        <li class="mcq-option" onclick="checkAnswer(this, false)">D) Market share always eventually recovers</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 17: Boston Matrix Strategic Actions -->
+        <div class="slide">
+            <h1>🎯 Boston Matrix: Strategic Actions</h1>
+            <div class="content">
+                <table>
+                    <tr>
+                        <th>Category</th>
+                        <th>Strategic Action</th>
+                        <th>Cash Flow</th>
+                        <th>Goal</th>
+                    </tr>
+                    <tr>
+                        <td><strong>⭐ Stars</strong></td>
+                        <td>HOLD - Maintain position</td>
+                        <td>Cash neutral (high revenue, high investment)</td>
+                        <td>Protect leadership, become Cash Cow</td>
+                    </tr>
+                    <tr>
+                        <td><strong>🐄 Cash Cows</strong></td>
+                        <td>MILK - Harvest profits</td>
+                        <td>High positive cash flow</td>
+                        <td>Generate funds for portfolio</td>
+                    </tr>
+                    <tr>
+                        <td><strong>❓ Question Marks</strong></td>
+                        <td>BUILD or DIVEST - Decide</td>
+                        <td>Negative cash flow (consume cash)</td>
+                        <td>Become Star or exit market</td>
+                    </tr>
+                    <tr>
+                        <td><strong>🐕 Dogs</strong></td>
+                        <td>DIVEST - Sell or discontinue</td>
+                        <td>Low or negative cash flow</td>
+                        <td>Free up resources for better uses</td>
+                    </tr>
+                </table>
+
+                <button class="definition-toggle" onclick="toggleDefinition(this)">📖 Show Portfolio Balance Theory</button>
+                <div class="definition-content">
+                    <p><strong>Ideal Portfolio Balance:</strong> A healthy business should have a mix of products across categories. Cash Cows fund development, Stars provide future Cash Cows, selected Question Marks offer growth potential, and Dogs are minimized.</p>
+                    <p><strong>Cash Flow Dynamics:</strong> The portfolio should be self-sustaining. Cash Cows generate surplus funds that finance Stars (to maintain position) and Question Marks (to build share). Dogs should be eliminated to stop cash drain.</p>
+                    <p><strong>Lifecycle Connection:</strong> Products move between categories over time. Question Marks that succeed become Stars. Stars become Cash Cows as markets mature. Cash Cows eventually become Dogs if not refreshed. This is why continuous innovation is essential.</p>
+                    <p><strong>Strategic Timing:</strong> Invest in Question Marks before competitors dominate. Maintain Stars before they lose position. Milk Cash Cows before they decline. Divest Dogs before they destroy too much value.</p>
+                </div>
+
+                <div class="example-box">
+                    <h3>🎬 Real Example: Netflix Portfolio Strategy</h3>
+                    <p><strong>Cash Cow:</strong> US/UK streaming subscriptions - mature markets, dominant position, fund everything</p>
+                    <p><strong>Stars:</strong> International expansion (India, Africa) - high growth regions, leading position</p>
+                    <p><strong>Question Mark:</strong> Gaming service - new market, uncertain if subscribers want it, testing investment</p>
+                    <p><strong>Former Dog (Divested):</strong> DVD-by-mail service - discontinued 2023, obsolete market</p>
+                    <p>Strategy: US profits fund international growth and gaming experiments, killed DVDs to focus resources</p>
+                </div>
+
+                <div class="mcq-section">
+                    <div class="mcq-question">❓ A business discovers its entire portfolio consists of Cash Cows and Dogs. What is the most critical strategic issue?</div>
+                    <ul class="mcq-options">
+                        <li class="mcq-option" onclick="checkAnswer(this, false)">A) Too much cash generation without outlets</li>
+                        <li class="mcq-option" onclick="checkAnswer(this, true)">B) No future growth products in pipeline</li>
+                        <li class="mcq-option" onclick="checkAnswer(this, false)">C) Excessive investment in mature markets</li>
+                        <li class="mcq-option" onclick="checkAnswer(this, false)">D) Inability to defend current market positions</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 18: New Product Development (NPD) Introduction -->
+        <div class="slide">
+            <h1>💡 New Product Development (NPD)</h1>
+            <div class="content">
+                <div class="visual-diagram">💡➡️🔬➡️✅➡️🚀</div>
+                <div class="bullet-points">
+                    <ul>
+                        <li><strong>Definition:</strong> Process of turning new ideas into market-ready products/services</li>
+                        <li><strong>Involves:</strong> R&D, market research, engineering, design, packaging, branding</li>
+                        <li><strong>Critical for survival:</strong> Replaces products in decline, maintains competitiveness</li>
+                        <li><strong>High risk:</strong> Most new products fail (70-90% failure rate)</li>
+                        <li><strong>Essential investment:</strong> Companies without NPD become obsolete</li>
+                    </ul>
+                </div>
+
+                <button class="definition-toggle" onclick="toggleDefinition(this)">📖 Show NPD Theory</button>
+                <div class="definition-content">
+                    <p><strong>Formal Definition:</strong> New product development includes the people and processes involved in turning new ideas into products or services ready for launch.</p>
+                    <p><strong>Cross-Functional Activity:</strong> NPD involves research and development (R&D), market research, product engineering and design, plus expertise in packaging, advertising, price and branding.</p>
+                    <p><strong>PLC Connection:</strong> NPD represents all the activities categorized as 'development' in the product life cycle. It's the foundation for future growth.</p>
+                    <p><strong>Why Necessary:</strong> Markets evolve, customer preferences change, technology advances, and competitors innovate. Without NPD, businesses rely on declining products and eventually fail.</p>
+                </div>
+
+                <div class="example-box">
+                    <h3>🚗 Real Example: Dyson Electric Car (Failed NPD)</h3>
+                    <p><strong>Investment:</strong> £500 million, 7-seater electric car project</p>
+                    <p><strong>Development (2016-2019):</strong></p>
+                    <p>• Recruited 500+ engineers from automotive industry</p>
+                    <p>• Developed working prototypes with solid-state batteries</p>
+                    <p>• Built test track in Wiltshire, UK</p>
+                    <p>• Planned Singapore manufacturing facility</p>
+                    <p><strong>Decision (2019):</strong> Project cancelled - "not commercially viable"</p>
+                    <p><strong>Why?</strong> Would cost £150,000+ per car, couldn't compete with Tesla/traditional carmakers</p>
+                    <p><strong>Lesson:</strong> Even £500m NPD investment can fail if business case doesn't work. High-risk process.</p>
+                </div>
+
+                <div class="mcq-section">
+                    <div class="mcq-question">❓ Why do most businesses continue investing in NPD despite high failure rates of 70-90%?</div>
+                    <ul class="mcq-options">
+                        <li class="mcq-option" onclick="checkAnswer(this, false)">A) Government regulations require minimum R&D spending</li>
+                        <li class="mcq-option" onclick="checkAnswer(this, false)">B) Failed products can be easily converted</li>
+                        <li class="mcq-option" onclick="checkAnswer(this, true)">C) Without innovation they will eventually become obsolete</li>
+                        <li class="mcq-option" onclick="checkAnswer(this, false)">D) Successful competitors always share their innovations</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 19: NPD Process Stages -->
+        <div class="slide">
+            <h1>🔄 The NPD Process</h1>
+            <div class="content">
+                <div class="bullet-points">
+                    <ul>
+                        <li><strong>1. Idea Generation:</strong> Creating and collecting new product concepts</li>
+                        <li><strong>2. Screening:</strong> Filtering ideas to identify most promising</li>
+                        <li><strong>3. Concept Development:</strong> Developing detailed product concepts</li>
+                        <li><strong>4. Business Analysis:</strong> Evaluating financial viability</li>
+                        <li><strong>5. Prototype Development:</strong> Creating working samples</li>
+                        <li><strong>6. Test Marketing:</strong> Limited launch to gauge market appeal</li>
+                        <li><strong>7. Commercialization:</strong> Full-scale launch</li>
+                    </ul>
+                </div>
+
+                <button class="definition-toggle" onclick="toggleDefinition(this)">📖 Show Process Details</button>
+                <div class="definition-content">
+                    <p><strong>Product Development Process:</strong> A formal process of generating, selecting, developing, and commercializing product ideas. Each stage acts as a filter, eliminating weak ideas before significant investment.</p>
+                    <p><strong>Idea Generation Sources:</strong> Customer feedback, employee suggestions, competitor analysis, R&D breakthroughs, market research, technological advances.</p>
+                    <p><strong>Screening Criteria:</strong> Market potential, technical feasibility, strategic fit with business, competitive advantage, resource requirements, profit potential.</p>
+                    <p><strong>Risk Reduction:</strong> Each stage reduces risk before major investment. Better to kill ideas early when costs are low than after spending millions on development.</p>
+                </div>
+
+                <div class="example-box">
+                    <h3>🍫 Real Example: Cadbury's Inventor Competition</h3>
+                    <p><strong>Idea Generation:</strong> Public competition - anyone can submit chocolate bar ideas (thousands entered)</p>
+                    <p><strong>Screening:</strong> Cadbury team selected 3 finalists from thousands</p>
+                    <p><strong>Concept Development:</strong> Worked with inventors to refine recipes</p>
+                    <p><strong>Prototype:</strong> Created actual bars - tested taste, texture, production</p>
+                    <p><strong>Test Marketing:</strong> Public vote to choose winner, limited production</p>
+                    <p><strong>Commercialization:</strong> Winner's bar launched nationally</p>
+                    <p><strong>Examples:</strong> Cadbury Inventor bars (various years) - some succeeded, others discontinued</p>
+                </div>
+
+                <div class="mcq-section">
+                    <div class="mcq-question">❓ At which stage of NPD should a business eliminate most unpromising ideas to minimize wasted investment?</div>
+                    <ul class="mcq-options">
+                        <li class="mcq-option" onclick="checkAnswer(this, false)">A) After test marketing reveals consumer response</li>
+                        <li class="mcq-option" onclick="checkAnswer(this, true)">B) During screening before significant development costs</li>
+                        <li class="mcq-option" onclick="checkAnswer(this, false)">C) Following prototype development and testing</li>
+                        <li class="mcq-option" onclick="checkAnswer(this, false)">D) During commercialization based on initial sales</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 20: Prototypes -->
+        <div class="slide">
+            <h1>🔧 Prototypes</h1>
+            <div class="content">
+                <div class="visual-diagram">🔨➡️📦➡️🧪</div>
+                <div class="bullet-points">
+                    <ul>
+                        <li><strong>Definition:</strong> Pre-production samples used for testing and evaluation</li>
+                        <li><strong>Purpose:</strong> Test functionality, design, manufacturing before full production</li>
+                        <li><strong>Identify problems:</strong> Find and fix issues cheaply before mass production</li>
+                        <li><strong>Gather feedback:</strong> Show to customers, retailers, get reactions</li>
+                        <li><strong>Refine design:</strong> Make improvements based on testing results</li>
+                    </ul>
+                </div>
+
+                <button class="definition-toggle" onclick="toggleDefinition(this)">📖 Show Prototyping Theory</button>
+                <div class="definition-content">
+                    <p><strong>Academic Definition:</strong> Prototypes are pre-production samples of products used for testing and evaluation. They bridge the gap between concept and commercial product.</p>
+                    <p><strong>Testing Purposes:</strong> Functional testing (does it work?), durability testing (will it last?), safety testing (is it safe?), user experience testing (is it easy to use?), manufacturing feasibility (can we make it economically?).</p>
+                    <p><strong>Cost Efficiency:</strong> Finding problems at prototype stage costs thousands. Finding same problems after launch costs millions in recalls, reputation damage, and redesign.</p>
+                    <p><strong>Iteration:</strong> Multiple prototype versions are common. First prototype reveals issues, second prototype addresses them, third prototype refines further. Process continues until ready for production.</p>
+                </div>
+
+                <div class="example-box">
+                    <h3>👟 Real Example: Nike Shoe Prototyping</h3>
+                    <p><strong>Stage 1:</strong> Designers sketch concepts (hundreds of designs)</p>
+                    <p><strong>Stage 2:</strong> 3D modeling and computer simulation</p>
+                    <p><strong>Stage 3:</strong> First physical prototype - basic materials, test structure</p>
+                    <p><strong>Stage 4:</strong> Athlete testing - Cristiano Ronaldo, Serena Williams test boots</p>
+                    <p><strong>Stage 5:</strong> Feedback - too heavy, uncomfortable, grip issues identified</p>
+                    <p><strong>Stage 6:</strong> Revised prototypes - materials changed, design adjusted</p>
+                    <p><strong>Stage 7:</strong> Final prototype approved after 10-20 iterations</p>
+                    <p><strong>Stage 8:</strong> Manufacturing setup for mass production</p>
+                    <p>Process takes 18+ months before consumers can buy the shoe</p>
+                </div>
+
+                <div class="mcq-section">
+                    <div class="mcq-question">❓ What is the primary advantage of discovering product flaws during prototype testing rather than after launch?</div>
+                    <ul class="mcq-options">
+                        <li class="mcq-option" onclick="checkAnswer(this, false)">A) Customers provide more honest feedback post-launch</li>
+                        <li class="mcq-option" onclick="checkAnswer(this, true)">B) Fixes cost significantly less before mass production</li>
+                        <li class="mcq-option" onclick="checkAnswer(this, false)">C) Competitors cannot copy products in prototype stage</li>
+                        <li class="mcq-option" onclick="checkAnswer(this, false)">D) Manufacturing equipment is easier to modify later</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 21: Test Marketing -->
+        <div class="slide">
+            <h1>🧪 Test Marketing</h1>
+            <div class="content">
+                <div class="visual-diagram">📍➡️🛒➡️📊</div>
+                <div class="bullet-points">
+                    <ul>
+                        <li><strong>Definition:</strong> Selling product on limited basis to gauge market appeal</li>
+                        <li><strong>Limited geography:</strong> One city, region, or country before full launch</li>
+                        <li><strong>Real conditions:</strong> Actual stores, real prices, genuine marketing</li>
+                        <li><strong>Gather data:</strong> Sales volumes, repeat purchases, customer feedback</li>
+                        <li><strong>Reduce risk:</strong> Fix problems before expensive national launch</li>
+                    </ul>
+                </div>
+
+                <button class="definition-toggle" onclick="toggleDefinition(this)">📖 Show Test Marketing Strategy</button>
+                <div class="definition-content">
+                    <p><strong>Academic Definition:</strong> Test marketing is the stage of product development in which a product is sold on a limited basis to gauge its market appeal. It's a real-world experiment before full commercialization.</p>
+                    <p><strong>What's Tested:</strong> Price sensitivity (will people pay this?), purchase frequency (will they buy again?), marketing effectiveness (does advertising work?), distribution feasibility (can retailers stock it?), competitive response (how do rivals react?).</p>
+                    <p><strong>Geographic Strategy:</strong> Choose representative market - similar demographics to target market but isolated enough that failure won't damage national brand reputation.</p>
+                    <p><strong>Risks:</strong> Competitors see your product and can copy or prepare counter-strategies. Test market failure can create negative publicity. Some businesses skip this stage and launch nationally.</p>
+                </div>
+
+                <div class="example-box">
+                    <h3>🍕 Real Example: Greggs Vegan Sausage Roll</h3>
+                    <p><strong>Development (2018):</strong> Greggs noticed vegan trend, developed plant-based sausage roll</p>
+                    <p><strong>Test Marketing (Late 2018):</strong></p>
+                    <p>• Launched in ~20 Newcastle stores only</p>
+                    <p>• Tested customer acceptance in Greggs' home city</p>
+                    <p>• Monitored sales, gathered feedback</p>
+                    <p>• Evaluated if kitchens could handle separate vegan production</p>
+                    <p><strong>Results:</strong></p>
+                    <p>• Massive demand - sold out daily</p>
+                    <p>• Positive social media buzz</p>
+                    <p>• Operations worked smoothly</p>
+                    <p><strong>National Launch (January 2019):</strong> Rolled out UK-wide, became huge success</p>
+                    <p><strong>Outcome:</strong> One of UK's most successful product launches, saved millions by testing first</p>
+                </div>
+
+                <div class="mcq-section">
+                    <div class="mcq-question">❓ Why might some businesses choose to skip test marketing and launch nationally immediately?</div>
+                    <ul class="mcq-options">
+                        <li class="mcq-option" onclick="checkAnswer(this, false)">A) Test markets never provide accurate predictions</li>
+                        <li class="mcq-option" onclick="checkAnswer(this, true)">B) Competitors could copy product during testing</li>
+                        <li class="mcq-option" onclick="checkAnswer(this, false)">C) National launches always cost less overall</li>
+                        <li class="mcq-option" onclick="checkAnswer(this, false)">D) Retailers refuse to participate in tests</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 22: Uses of Product Life Cycle -->
+        <div class="slide">
+            <h1>📈 Three Key Uses of PLC</h1>
+            <div class="content">
+                <div class="bullet-points">
+                    <ul>
+                        <li><strong>1. Planning Marketing Mix:</strong> Adjust product, price, promotion, place at each stage</li>
+                        <li><strong>2. Cash Flow Forecasting:</strong> Predict when investment needed vs. when profits generated</li>
+                        <li><strong>3. Portfolio Balance:</strong> Ensure products at different stages to maintain stability</li>
+                    </ul>
+                </div>
+
+                <button class="definition-toggle" onclick="toggleDefinition(this)">📖 Show Strategic Applications</button>
+                <div class="definition-content">
+                    <p><strong>Marketing Mix Decisions:</strong> Introduction needs awareness advertising; Growth needs distribution expansion; Maturity needs differentiation; Decline needs cost reduction. PLC guides these decisions systematically.</p>
+                    <p><strong>Cash Flow Management:</strong> Introduction and Growth consume cash (investment exceeds revenue). Maturity generates cash (revenue exceeds costs). Decline may still generate some cash but declining. Helps plan financing needs.</p>
+                    <p><strong>Portfolio Planning:</strong> Recognising the need for a balanced product portfolio. Don't want all products declining simultaneously - need mix of introduction, growth, and maturity products to ensure stable cash flow and sustainable growth.</p>
+                    <p><strong>Strategic Timing:</strong> Knowing which stage products are in helps time new product launches, extension strategies, and divestment decisions appropriately.</p>
+                </div>
+
+                <div class="example-box">
+                    <h3>🎮 Real Example: PlayStation Strategy</h3>
+                    <p><strong>Portfolio Balance in 2024:</strong></p>
+                    <p><strong>PS5 (Growth):</strong> Consuming cash for marketing, game development, production scaling</p>
+                    <p><strong>PS4 (Maturity/Late):</strong> Still generating cash from existing users, minimal marketing spend</p>
+                    <p><strong>PS VR2 (Introduction):</strong> Heavy investment, building awareness, uncertain future</p>
+                    <p><strong>PS6 (Development):</strong> R&D investment, no revenue yet</p>
+                    <p><strong>Cash Flow:</strong> PS4 profits fund PS5 growth and PS6 development. Balanced portfolio ensures continuous income while investing in future.</p>
+                    <p>Without this balance, would either have no growth products or no cash to fund them.</p>
+                </div>
+
+                <div class="mcq-section">
+                    <div class="mcq-question">❓ A company with all products in growth stage would likely face which challenge?</div>
+                    <ul class="mcq-options">
+                        <li class="mcq-option" onclick="checkAnswer(this, false)">A) Excessive profits with no investment outlets</li>
+                        <li class="mcq-option" onclick="checkAnswer(this, false)">B) Inability to compete with established rivals</li>
+                        <li class="mcq-option" onclick="checkAnswer(this, true)">C) Severe cash flow pressure from high investment</li>
+                        <li class="mcq-option" onclick="checkAnswer(this, false)">D) Declining sales across entire product range</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 23: PLC Limitations -->
+        <div class="slide">
+            <h1>⚠️ Product Life Cycle Limitations</h1>
+            <div class="content">
+                <div class="bullet-points">
+                    <ul>
+                        <li><strong>Not all products follow pattern:</strong> Some skip stages, others stay in maturity indefinitely</li>
+                        <li><strong>Hard to predict timing:</strong> Can't tell how long each stage will last</li>
+                        <li><strong>Self-fulfilling:</strong> Treating product as "declining" can cause decline</li>
+                        <li><strong>Varies by industry:</strong> Fashion has short cycles, pharmaceuticals have long cycles</li>
+                        <li><strong>Extension strategies change shape:</strong> Successful extensions mean cycle doesn't follow theory</li>
+                    </ul>
+                </div>
+
+                <button class="definition-toggle" onclick="toggleDefinition(this)">📖 Show Critical Analysis</button>
+                <div class="definition-content">
+                    <p><strong>Theory vs Reality:</strong> PLC is a model - useful for understanding patterns but not every product fits perfectly. Some products never reach introduction, others skip growth, some stay mature for decades.</p>
+                    <p><strong>Timing Uncertainty:</strong> Biggest limitation is can't tell how long stages last. One product might stay in growth for 2 years, another for 20 years. Makes planning difficult.</p>
+                    <p><strong>Management Influence:</strong> If managers believe product is declining and cut marketing, it will decline - becomes self-fulfilling prophecy. Product might have been saved with investment.</p>
+                    <p><strong>Industry Differences:</strong> Fast fashion: 3-month cycles. Pharmaceuticals: 20-year patent protection. Industrial machinery: 50+ year lifecycles. Single model can't capture all variations.</p>
+                </div>
+
+                <div class="example-box">
+                    <h3>🥤 Real Example: Coca-Cola (Exception)</h3>
+                    <p><strong>Launched:</strong> 1886 (138+ years ago)</p>
+                    <p><strong>Expected:</strong> Should have declined decades ago according to PLC theory</p>
+                    <p><strong>Reality:</strong> Still in "maturity" stage globally</p>
+                    <p><strong>Why Exception?</strong></p>
+                    <p>• Continuous extension strategies (new flavors, Coke Zero, packaging)</p>
+                    <p>• Massive marketing investment maintains relevance</p>
+                    <p>• Cultural icon status transcends normal product lifecycle</p>
+                    <p>• Global expansion to new markets resets cycle</p>
+                    <p><strong>Lesson:</strong> With sufficient investment and strategy, maturity stage can last almost indefinitely. PLC is guide, not law.</p>
+                </div>
+
+                <div class="mcq-section">
+                    <div class="mcq-question">❓ Which criticism of PLC theory is most valid when applying it to real business situations?</div>
+                    <ul class="mcq-options">
+                        <li class="mcq-option" onclick="checkAnswer(this, false)">A) All products eventually decline regardless of effort</li>
+                        <li class="mcq-option" onclick="checkAnswer(this, true)">B) Cannot reliably predict duration of each stage</li>
+                        <li class="mcq-option" onclick="checkAnswer(this, false)">C) Marketing mix never needs adjustment over time</li>
+                        <li class="mcq-option" onclick="checkAnswer(this, false)">D) Cash flow patterns are identical for products</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 24: Application Questions -->
+        <div class="slide">
+            <h1>🧠 Application Scenarios</h1>
+            <div class="content">
+                <h3>Scenario 1: UK Energy Drink Brand</h3>
+                <p>A UK energy drink company has three products:</p>
+                <ul class="bullet-points">
+                    <li><strong>Product A:</strong> Original formula, 60% market share, energy drink market growing 2% annually</li>
+                    <li><strong>Product B:</strong> Sugar-free version, 5% share, sugar-free segment growing 25% annually</li>
+                    <li><strong>Product C:</strong> Cola-flavored variant, 3% share in declining flavored energy market (-5% growth)</li>
+                </ul>
+
+                <div class="mcq-section">
+                    <div class="mcq-question">❓ Using Boston Matrix analysis, which strategy should the company prioritize?</div>
+                    <ul class="mcq-options">
+                        <li class="mcq-option" onclick="checkAnswer(this, false)">A) Milk Product A, divest B and C immediately</li>
+                        <li class="mcq-option" onclick="checkAnswer(this, true)">B) Milk Product A, invest heavily in B, divest C</li>
+                        <li class="mcq-option" onclick="checkAnswer(this, false)">C) Invest equally in all three products</li>
+                        <li class="mcq-option" onclick="checkAnswer(this, false)">D) Divest Product A to focus on growth markets</li>
+                    </ul>
+                </div>
+
+                <h3 style="margin-top: 30px;">Scenario 2: Fashion Retailer</h3>
+                <p>A clothing retailer notices sales of their bestselling jacket declining for 3 consecutive seasons. They're considering options.</p>
+
+                <div class="mcq-section">
+                    <div class="mcq-question">❓ Which extension strategy would be LEAST appropriate for a fashion product?</div>
+                    <ul class="mcq-options">
+                        <li class="mcq-option" onclick="checkAnswer(this, false)">A) Launch new colors and patterns for next season</li>
+                        <li class="mcq-option" onclick="checkAnswer(this, false)">B) Partner with influencer to create limited edition</li>
+                        <li class="mcq-option" onclick="checkAnswer(this, true)">C) Keep identical design but reduce price 50%</li>
+                        <li class="mcq-option" onclick="checkAnswer(this, false)">D) Reposition as vintage/retro style</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 25: Summary -->
+        <div class="slide">
+            <h1>📚 Summary: Key Takeaways</h1>
+            <div class="content">
+                <h3>Product Life Cycle</h3>
+                <ul class="bullet-points">
+                    <li>All products follow pattern: Development → Introduction → Growth → Maturity → Decline</li>
+                    <li>Marketing mix must adapt at each stage for optimal performance</li>
+                    <li>Extension strategies can prolong maturity and delay decline</li>
+                </ul>
+
+                <h3>Boston Matrix Portfolio Analysis</h3>
+                <ul class="bullet-points">
+                    <li><strong>Stars:</strong> Hold position, high growth + high share</li>
+                    <li><strong>Cash Cows:</strong> Milk profits, low growth + high share</li>
+                    <li><strong>Question Marks:</strong> Build or divest, high growth + low share</li>
+                    <li><strong>Dogs:</strong> Divest, low growth + low share</li>
+                </ul>
+
+                <h3>New Product Development</h3>
+                <ul class="bullet-points">
+                    <li>Formal process from idea generation to commercialization</li>
+                    <li>Prototypes and test marketing reduce risk before full launch</li>
+                    <li>Essential for replacing declining products and maintaining competitiveness</li>
+                </ul>
+
+                <div class="example-box">
+                    <h3>🎯 Business Reality</h3>
+                    <p>Successful businesses continuously:</p>
+                    <p>• Monitor where products are in their lifecycle</p>
+                    <p>• Balance portfolio across Stars, Cash Cows, and Question Marks</p>
+                    <p>• Invest Cash Cow profits in NPD and Star maintenance</p>
+                    <p>• Make tough decisions about Dogs and failing Question Marks</p>
+                    <p>• Adapt strategies as markets and competitive positions evolve</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Controls -->
+        <div class="navigation">
+            <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">← Previous</button>
+            <div class="progress">
+                <span id="slideNumber">1</span> / <span id="totalSlides">25</span>
+            </div>
+            <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">Next →</button>
+        </div>
+
+    </div>
+
+    <script>
+        let currentSlide = 1;
+        const totalSlides = document.querySelectorAll('.slide').length;
+        
+        document.getElementById('totalSlides').textContent = totalSlides;
+
+        function showSlide(n) {
+            const slides = document.querySelectorAll('.slide');
+            
+            if (n > totalSlides) { currentSlide = totalSlides; }
+            if (n < 1) { currentSlide = 1; }
+            
+            slides.forEach(slide => slide.classList.remove('active'));
+            slides[currentSlide - 1].classList.add('active');
+            
+            document.getElementById('slideNumber').textContent = currentSlide;
+            document.getElementById('prevBtn').disabled = (currentSlide === 1);
+            document.getElementById('nextBtn').disabled = (currentSlide === totalSlides);
+            
+            // Reset MCQ answers when changing slides
+            document.querySelectorAll('.mcq-option').forEach(option => {
+                option.classList.remove('correct', 'incorrect');
+                option.style.pointerEvents = 'auto';
+            });
+
+            // Scroll to top when changing slides
+            window.scrollTo(0, 0);
+        }
+
+        function changeSlide(direction) {
+            currentSlide += direction;
+            showSlide(currentSlide);
+        }
+
+        function toggleDefinition(button) {
+            const content = button.nextElementSibling;
+            content.classList.toggle('show');
+            button.textContent = content.classList.contains('show') 
+                ? '📖 Hide Definition' 
+                : '📖 Show Full Definition';
+        }
+
+        function checkAnswer(option, isCorrect) {
+            const allOptions = option.parentElement.querySelectorAll('.mcq-option');
+            
+            // Disable all options after first click
+            allOptions.forEach(opt => opt.style.pointerEvents = 'none');
+            
+            if (isCorrect) {
+                option.classList.add('correct');
+            } else {
+                option.classList.add('incorrect');
+                // Highlight the correct answer
+                allOptions.forEach(opt => {
+                    if (opt.onclick.toString().includes('true')) {
+                        opt.classList.add('correct');
+                    }
+                });
+            }
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'ArrowLeft' && currentSlide > 1) {
+                changeSlide(-1);
+            } else if (event.key === 'ArrowRight' && currentSlide < totalSlides) {
+                changeSlide(1);
+            }
+        });
+
+        // Initialize
+        showSlide(currentSlide);
+    </script>
+</body>
+</html>
